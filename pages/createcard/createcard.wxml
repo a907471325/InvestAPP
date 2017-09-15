@@ -1,0 +1,63 @@
+
+<!--pages/createcard/createcard.wxml-->
+<view class="bg-gray2">
+  <form bindsubmit="formSubmit" bindreset="formReset">
+    <view class="card-form">
+      <view class="card-formitem">
+        <view class="card-user">
+          <view class="sign">
+            <image src="{{cardData.data.avatarUrl}}"></image>
+          </view>
+          <view class="message">
+            <!-- <view wx:if="{{cardData.data.mobile!=''}}">
+              <text class="btn-verify" catchtap="toVerifyCode" wx:if="{{cardData.data.mobileVerify}}">更改</text>
+              <text class="btn-verify" catchtap="toVerifyCode" wx:else>验证</text>
+            </view> -->
+            <view class="card-input"><text>姓名：\t\t</text><input placeholder="" class="" placeholder-class="gray3" maxlength="18" name="name" value="{{cardData.data.name}}" bindinput="cardDataName" /></view>
+             <view class="card-input"><text>手机号：\t\t</text><input placeholder="" class="" placeholder-class="gray3" maxlength="20" type="number" name="mobile" value="{{cardData.data.mobile}}" bindinput="cardDataMobile" disabled="{{cardData.data.mobileVerify}}" /></view>
+          </view>
+        </view>
+      </view>
+      <view class="card-formitem">
+       <view class="card-input"><text>公司名称：\t\t</text><input placeholder="" class="" placeholder-class="gray3" maxlength="20" name="companyName" value="{{cardData.data.companyName}}" bindinput="cardDataCompanyName" /></view>
+        <view class="card-input"><text>招商产业：\t\t</text><input placeholder="" class="" placeholder-class="gray3" maxlength="20" name="title" value="{{cardData.data.title}}" bindinput="cardDataTitle" /></view>
+        <view class="card-input"><text>邮箱：\t\t</text><input placeholder="" class="" placeholder-class="gray3" maxlength="20" name="email" value="{{cardData.data.email}}" bindinput="cardDataEmail"/></view>
+      </view>
+      
+      <view class="card-formitem">
+        <view class="card-input">
+          <text>地址：\t\t</text>
+          <input value="{{cardData.data.address}}" placeholder="" placeholder-class="gray3" maxlength="40" name="address" class="address-item" />
+          <text class="label blue iconfont icon-location" bindtap="openAddress"></text>
+        </view>
+      </view>
+
+      <view class="card-formitem">
+      <text>项目简介：</text>
+        <view class="card-inputlabel">
+        
+          <textarea placeholder="" placeholder-class="gray3" maxlength="180" name="project" value="{{cardData.data.project}}" class="card-input" bindinput="cardDataProject" />
+        </view>
+      </view>
+
+      <view class="card-formitem">
+      <text>项目需求：</text>
+        <view class="card-inputlabel">
+          <textarea placeholder="" placeholder-class="gray3" maxlength="180" name="need" value="{{cardData.data.need}}" class="card-input" bindinput="cardDataNeed" />
+        </view>
+      </view>
+
+      <view class="card-formitem">
+       <text>园区介绍：</text>
+        <view class="card-inputlabel">
+       
+          <textarea placeholder="" placeholder-class="gray3" maxlength="180" name="intro" value="{{cardData.data.intro}}" class="card-input" bindinput="cardDataIntro" />
+        </view>
+      </view>
+
+      <view class="container">
+        <button formType="submit" class="btn-blue">保存</button>
+      </view>
+    </view>
+  </form>
+</view>

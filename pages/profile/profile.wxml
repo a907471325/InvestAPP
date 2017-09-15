@@ -1,0 +1,17 @@
+<!--index.wxml-->
+<view class="profile">
+  <view  class="useravatar" >
+    <text class="useravatar-key">头像</text>
+    <image class="useravatar-value" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+  </view>
+  <view class="username">
+    <text class="username-key">用户名</text>
+    <text class="username-value">{{userInfo.nickName}}</text>
+  </view>
+  <view class="cardholder">
+      <text class="card-holder">名片夹</text>
+      <navigator url="../cardcase/cardcase">  
+        <text class="card-in">></text>
+      </navigator>
+  </view>
+</view>

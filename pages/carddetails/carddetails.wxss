@@ -1,0 +1,22 @@
+/* pages/carddetails/carddetails.wxss */
+
+@import "../template/template.wxss";
+
+.btn-blue {
+  margin-top: 30rpx;
+  background-color: #4876FF;
+  border-radius: 10rpx;
+  color: #fff;
+}
+
+.showall{
+  margin-left: 440rpx;
+  margin-right: 14rpx;
+  float: right;
+  color:#4876FF;
+}
+
+.hide-show {
+ 
+}
+

@@ -1,0 +1,69 @@
+
+<!--pages/template/template.wxml-->
+<template name="card">
+  <view class="bg-gray2">
+    <navigator url="../carddetails/carddetails?id={{itemName.id}}" d hover-class="none" wx:key="{{itemName}}" wx:for="{{cardData}}" wx:for-index="index" wx:for-item="itemName">
+      <view class="card-item">
+        <view class="card-head">
+          <view class="title">
+            <view class="name">{{itemName.name}}</view>
+            <view class="label">{{itemName.companyName}}</view>
+          </view>
+          <view class="sign">
+            <image src="{{itemName.avatarUrl}}" />
+          </view>
+        </view>
+        <view class="card-content">
+          <view>
+            <view class="phone">
+              <text class="gray3 iconfont icon-shoujiyanzheng "></text>
+              {{itemName.mobile}}
+            </view>
+
+            <!--<view class="customcontent gray4" wx:if="{{itemName.more==''}}">
+            没有更多介绍
+          </view>
+          <view class="customcontent gray4" wx:else>
+            {{itemName.more}}
+          </view>-->
+          </view>
+
+        </view>
+      </view>
+    </navigator>
+  </view>
+</template>
+
+<template name="othersCard">
+  <view class="bg-gray2">
+    <navigator url="../carddetails/carddetails?id={{itemName.id}}&type=other" d hover-class="none" wx:key="{{itemName}}" wx:for="{{cardData}}" wx:for-index="index" wx:for-item="itemName">
+      <view class="card-item">
+        <view class="card-head">
+          <view class="title">
+            <view class="name">{{itemName.name}}</view>
+            <view class="label">{{itemName.companyName}}</view>
+          </view>
+          <view class="sign">
+            <image src="{{itemName.avatarUrl}}" />
+          </view>
+        </view>
+        <view class="card-content">
+          <view>
+            <view class="phone">
+              <text class="gray3 iconfont icon-shoujiyanzheng "></text>
+              {{itemName.mobile}}
+            </view>
+
+            <!--<view class="customcontent gray4" wx:if="{{itemName.more==''}}">
+            没有更多介绍
+          </view>
+          <view class="customcontent gray4" wx:else>
+            {{itemName.more}}
+          </view>-->
+          </view>
+
+        </view>
+      </view>
+    </navigator>
+  </view>
+</template>

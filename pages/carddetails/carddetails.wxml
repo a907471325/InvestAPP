@@ -1,0 +1,94 @@
+<!--pages/carddetails/carddetails.wxml-->
+<view class="main bg-gray2">
+  <view class="bg-gray2">
+    <view>
+      <view class="card-item">
+        <view class="card-head">
+          <view class="title">
+            <view class="name">{{cardDetailsData.name}}</view>
+            <view class="label">{{cardDetailsData.companyName}}</view>
+          </view>
+          <view class="sign">
+            <image src="{{cardDetailsData.avatarUrl}}" />
+          </view>
+        </view>
+        <view class="card-content">
+          <view>
+            <view class="phone" bindtap="phoneCall" data-id="{{cardDetailsData.mobile}}">
+              <text wx:if="{{cardDetailsData.mobileVerify}}" class="iconfont icon-shoujiyanzheng green"></text>
+              <text wx:else class=" gray3 iconfont icon-shoujiyanzheng"></text>
+              {{cardDetailsData.mobile}}
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="card-attr" >
+      <view class="card-attritem">
+        <text class="label">邮箱</text>
+        <text wx:if="{{cardDetailsData.email==''}}" class="gray4"> 保密</text>
+        <text wx:else> {{cardDetailsData.email}}</text>
+      </view>
+      <view class="card-attritem">
+        <text class="label">地址</text>
+        <text wx:if="{{cardDetailsData.address==''}}" class="gray4"> 保密</text>
+        <label wx:else>
+          <text wx:if="{{ cardDetailsData.loglat!=''}}" bindtap="openAddress" data-loglat="{{cardDetailsData.loglat}}" data-name="{{cardDetailsData.address}}"> {{cardDetailsData.address}}<text class="green iconfont icon-location"></text></text>
+          <text wx:else> {{cardDetailsData.address}}</text>
+        </label>
+      </view>
+      <view class="card-attritem ">
+        <text class="label clear-right">项目简介</text>
+        <text class="showall" wx:if="{{cardDetailsData.project.length>40}}" bindtap='switchProjectStatus'>{{folded.project}}</text>
+        <text wx:if="{{cardDetailsData.project==''}}" class="gray4"> 暂时没有介绍</text>
+        <text class="card-attritem-textarea" wx:if="{{cardDetailsData.project.length>40}}"> {{folded.projectInfo}}</text>
+        <text class="card-attritem-textarea" wx:else> {{cardDetailsData.project}}</text>
+      </view>
+      <view class="card-attritem">
+        <text class="label clear-right">项目需求</text>
+        <text class="showall" wx:if="{{cardDetailsData.need.length>40}}" bindtap='switchNeedStatus'>{{folded.need}}</text>
+        <text wx:if="{{cardDetailsData.need==''}}" class="gray4"> 暂时没有介绍</text>
+        <text class="card-attritem-textarea" wx:if="{{cardDetailsData.need.length>40}}"> {{folded.needInfo}}</text>
+        <text class="card-attritem-textarea" wx:else> {{cardDetailsData.need}}</text>
+      </view>
+      <view class="card-attritem">
+        <text class="label clear-right">园区介绍</text>
+        <text class="showall" wx:if="{{cardDetailsData.intro.length>40}}" bindtap='switchIntroStatus'>{{folded.intro}}</text>
+        <text wx:if="{{cardDetailsData.intro==''}}" class="gray4"> 暂时没有介绍</text>
+        <text class="card-attritem-textarea" wx:if="{{cardDetailsData.intro.length>40}}"> {{folded.introInfo}}</text>
+        <text class="card-attritem-textarea" wx:else> {{folded.introInfo}}</text>
+      </view>
+    </view>
+    <view wx:if="{{cardDetailsData.mobile===mobile&&!isshare}}">
+      <button class="btn-white mb" bindtap="editCard" data-id="{{cardDetailsData.id}}">编辑名片</button>
+      <button type="warn" class="btn-red mb" bindtap="removeCard" data-id="{{cardDetailsData.id}}">删除名片</button>
+    </view>
+    <view wx:elif="{{isshare}}">
+      <button class="btn-white mb" bindtap="openMycard" wx:if="{{cardDetailsData.hasCollect}}">
+        打开小程序
+      </button>
+      <view wx:else>
+        <button class="btn-blue mb" bindtap="addCardOpen" data-id="{{cardDetailsData.id}}">
+          <text>加入名片夹</text>
+        </button>
+      </view>
+    </view>
+
+    <view wx:else>
+        <!-- <button class="btn-blue mb" data-id="{{cardDetailsData.id}} " bindtap="openShare">
+          <text> 扫码添加通讯录</text>
+        </button> -->
+        <button type="warn" class="btn-white mb" wx:if="{{cardDetailsData.hasCollect}}" bindtap="undockCard" data-id="{{cardDetailsData.id}}">
+          <text>移除名片夹</text>
+        </button>
+        <button wx:else class="btn-white mb" bindtap="addCard" data-id="{{cardDetailsData.id}}">
+          <text>加入名片夹</text>
+        </button>
+    </view>
+    
+    <view class="card-prompt ">
+      <text> 点击右上角，分享我的名片页面
+      </text>
+    </view>
+  </view>
+</view>

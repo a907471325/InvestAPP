@@ -1,0 +1,9 @@
+<import src="../template/template.wxml" />
+<view class="create" wx:if="{{cardData==''}}">
+  <navigator url="../createcard/createcard?id=0">
+    <span class="create-btn ">马上创建名片</span> 
+  </navigator>
+</view>
+<view class="main bg-gray2" wx:else>
+  <template is="card" data="{{cardData}}" />
+</view>

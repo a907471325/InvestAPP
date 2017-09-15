@@ -1,0 +1,8 @@
+<!--pages/cardcase/cardcase.wxml-->
+<import src="../template/template.wxml" />
+<view class = "card-empty" wx:if="{{cardData==''}}">
+  <text>名片夹是空的</text>
+</view>
+<view class="main bg-gray2" wx:else>
+  <template is="othersCard" data="{{cardData}}" />
+</view>

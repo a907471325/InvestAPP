@@ -1,0 +1,10 @@
+/* pages/cardcase/cardcase.wxss */
+@import "../template/template.wxss";
+
+.card-empty{
+  display: flex;
+  align-items: center;
+  margin:50rpx 0 0 250rpx;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 40rpx;
+}

@@ -1,0 +1,44 @@
+<!--pages/course/course.wxml-->
+<view class='container'>
+  <view class="course-header">
+    <text class="course-header-text" >
+    现代招商引资操作实务
+    </text>
+  </view>
+  <view class="course-introduce">
+    <text class="course-introduce-title" wx:if="{{item.type == 'book'}}">商品简介</text>
+    <text class="course-introduce-title" wx:else >课程简介</text>
+    <!-- <text class="course-introduce-info">《现代招商引资操作实务》着眼于招商引资在新形势下所面临的新机遇与新挑战，紧紧把握全球及国内产业转移趋势，立足于地方招商引资实践，遵循科学发展观，提升招商引资人员战略意识和综合素养，提高区域产业转移的承接能力，把招商引资工作做实做强，为地方经济发展作出卓越贡献。</text> -->
+  <text class="course-introduce-info">{{item.intro}}</text>
+  <text class="course-introduce-title" wx:if="{{item.type == 'book'}}">目录</text>
+  <text class="course-introduce-title" wx:else>课程列表</text>
+  <text class="course-introduce-info bottom-ex" wx:if="{{item.type == 'book'}}">{{item.detailBook}}</text>
+  <view class='item-detail' wx:if="{{item.type == 'audio'}}" >
+    <view  wx:for="{{item.detailSound}}">
+      <button bindtap="playCourse" data-music-id="{{index}}" class="btn-play">
+      <view class="course-layout" >
+        <text>{{index+1}}</text>
+        <text>{{item.song}}</text>
+        <text>{{item.len}}</text>
+      </view>
+      </button>
+    </view>
+    <view class="play-bar">
+      <text wx:if="{{min<10&&sec<10}}" class="play-bar-text">正在播放：{{currentPlay.song}}----0{{min}}:0{{sec}}</text>
+      <text wx:if="{{min<10&&sec>=10}}" class="play-bar-text">正在播放：{{currentPlay.song}}----0{{min}}:{{sec}}</text>
+      <text wx:if="{{min>=10&&sec<10}}" class="play-bar-text">正在播放：{{currentPlay.song}}----{{min}}:0{{sec}}</text>
+      <text wx:if="{{min>=10&&sec>=10}}" class="play-bar-text">正在播放：{{currentPlay.song}}----{{min}}:{{sec}}</text>
+      <block wx:if="{{playing === false}}">
+      <image class="play-bar-button" src="../../image/icon-play.png" bindtap="play" ></image>
+      </block>
+      <block wx:if="{{playing === true}}">
+      <image class="play-bar-button" src="../../image/icon-pause.png" bindtap="pause" ></image>
+      </block>
+    </view>
+     <!-- <audio class="player" id="myAudio" name="{{currentPlay.song}}" author="{{currentPlay.artist}}" src="{{currentPlay.url}}"  controls="true"></audio>  -->
+  </view>
+  </view>
+  
+  <button class="btn-buy" bindtap="confirmDetails" wx:if="{{item.type == 'book'}}" >立即购买</button>
+  <!-- <button class="btn-buy" bindtap="confirmDetails" wx:if="{{item.type == 'audio'}}" >购买课程</button> -->
+</view>
