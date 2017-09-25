@@ -2,12 +2,14 @@
 .container{
   padding: 0;
 }
+
 .course-header{
   width: 100%;
   height: 300rpx;
   background-image: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1504873503536&di=c0dbb5bf7faf90b1ba5e796eacc911e0&imgtype=0&src=http%3A%2F%2F3492644.s21i-3.faiusr.com%2F2%2FABUIABACGAAgiOj4nQUo3JXyVDCFBTjLAg.jpg");
   background-size: 100% 100%;
 }
+
 .course-header-text{
   color:white;
   position:absolute;
@@ -38,7 +40,7 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 .bottom-ex{
-  padding-bottom:100rpx;
+  padding-bottom:150rpx;
 }
 
 .item-detail{

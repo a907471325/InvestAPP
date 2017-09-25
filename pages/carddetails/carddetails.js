@@ -118,8 +118,8 @@ Page({
   },
   onShareAppMessage: function () {
     var that = this
-    var dataSet = that.data.cardDetailsData
-    var avatarUrl = dataSet.avatarUrl
+    // var dataSet = that.data.cardDetailsData
+    // var avatarUrl = dataSet.avatarUrl
     //  avatarUrl = avatarUrl.replace('&','%26')
     //  avatarUrl = avatarUrl.replace('=', '%3D')
     //  avatarUrl = avatarUrl.replace('/', '%2F')
@@ -127,7 +127,8 @@ Page({
     // console.log('pages/carddetails/carddetails?id=' + dataSet.id + '&name=' + dataSet.name + '&title=' + dataSet.title + '&mobile=' + dataSet.mobile + '&companyName=' + dataSet.companyName + '&more=' + dataSet.more + '&avatarUrl=' + encodeURIComponent(avatarUrl) + '&loglat=' + dataSet.loglat + '&address=' + dataSet.address + '&share=1')
     return {
       title: '这是我的名片,请惠存。',
-      path: 'pages/carddetails/carddetails?id=' + dataSet.id + '&name=' + dataSet.name + '&title=' + dataSet.title + '&mobile=' + dataSet.mobile + '&companyName=' + dataSet.companyName + '&loglat=' + dataSet.loglat + '&address=' + dataSet.address + '&share=1' + '&avatarUrl=' + encodeURIComponent(avatarUrl) + '&project=' + dataSet.project + '&need=' + dataSet.need + '&intro=' + dataSet.intro,
+      // path: 'pages/carddetails/carddetails?id=' + dataSet.id + '&name=' + dataSet.name + '&title=' + dataSet.title + '&mobile=' + dataSet.mobile + '&companyName=' + dataSet.companyName + '&loglat=' + dataSet.loglat + '&address=' + dataSet.address + '&share=1' + '&avatarUrl=' + encodeURIComponent(avatarUrl) + '&project=' + dataSet.project + '&need=' + dataSet.need + '&intro=' + dataSet.intro,
+      path: 'pages/carddetails/carddetails?id=' + that.data.cardDetailsData.id + '&share=1',
       success: function (res) {
         // 分享成功
         console.log('success')
@@ -181,24 +182,27 @@ Page({
   },
   //删除单张名片
   removeCard: function (e) {
-      var myCard = wx.getStorageSync('cardData') || []
-      if(myCard){
-        for (var i = 0; i < myCard.length; i++) {
-          if (myCard[i].id === e.target.dataset.id) {
-            myCard.splice(i)
-          }
-        }
-      }
-      wx.setStorageSync('cardData',myCard)
-      wx.showToast({
-        title: '删除成功',
-        icon: 'success',
-        duration: 1000,
+      // var myCard = wx.getStorageSync('cardData') || []
+      // if(myCard){
+      //   for (var i = 0; i < myCard.length; i++) {
+      //     if (myCard[i].id === e.target.dataset.id) {
+      //       myCard.splice(i)
+      //     }
+      //   }
+      // }
+      // wx.setStorageSync('cardData',myCard)
+      app.delCardData(e.target.dataset.id,function(res2){
+        wx.showToast({
+          title: '删除成功',
+          icon: 'success',
+          duration: 1000,
+        })
+        setTimeout( function () {
+          wx.navigateBack({
+            delta: 1
+          })
+        },1000)
       })
-      wx.navigateBack({
-        delta: 1
-      })
-
   },
   //编辑单张名片
   editCard: function (e) {
@@ -278,20 +282,23 @@ Page({
   addCardOpen: function (e) {
     var that = this
     var othersCardData = that.data.cardDetailsData
-    var preData = wx.getStorageSync('othersCardData') || []
-    preData.unshift(othersCardData)
-    wx.setStorageSync('othersCardData', preData)
-    
-    wx.showToast({
+    // var preData = wx.getStorageSync('othersCardData') || []
+    // preData.unshift(othersCardData)
+    // wx.setStorageSync('othersCardData', preData)
+    app.addOtherCard(othersCardData,function(){
+      wx.showToast({
         title: '添加名片',
         icon: 'success',
-        duration: 2000,
+        duration: 1000,
         complete: function () {
-          wx.navigateTo({
-            url: '../cardcase/cardcase',
-          })
+          setTimeout(function(){
+            wx.navigateTo({
+              url: '../cardcase/cardcase',
+            })
+          },1000)
         }
       })
+    })
     
   },
   openShare: function (e) {
@@ -350,35 +357,34 @@ Page({
         'otherscardDetailsData.id': options.id,
         'GetOthersCard2.data.id': options.id
       })
-      var othersCardData = wx.getStorageSync('othersCardData') || []
+      // var othersCardData = wx.getStorageSync('othersCardData') || []
       if (options.share) {
-        that.setData({
-          isshare: true,
-          'cardDetailsData.id': options.id,
-          'cardDetailsData.name': options.name,
-          'cardDetailsData.title': options.title,
-          'cardDetailsData.mobile': options.mobile,
-          'cardDetailsData.companyName': options.companyName,
-          'cardDetailsData.avatarUrl': decodeURIComponent(options.avatarUrl),
-          'cardDetailsData.email': options.email,
-          'cardDetailsData.loglat': options.loglat,
-          'cardDetailsData.address': options.address,
-          'cardDetailsData.project': options.project,
-          'cardDetailsData.need': options.need,
-          'cardDetailsData.intro': options.intro,
-          'folded.projectInfo': options.project.slice(0, 19) + '......',
-          'folded.needInfo': options.need.slice(0, 19) + '......',
-          'folded.introInfo': options.intro.slice(0, 19) + '......'
+        app.getCardData(options.id,function(res2){
+          console.log(res2.cardData)
+          that.setData({
+            isshare: true,
+            cardDetailsData : res2.cardData,
+            'folded.projectInfo': res2.cardData.project.slice(0, 19) + '......',
+            'folded.needInfo': res2.cardData.need.slice(0, 19) + '......',
+            'folded.introInfo': res2.cardData.intro.slice(0, 19) + '......'
+          })
         })
-        if (othersCardData) {
-          for (var i = 0; i < othersCardData.length; i++) {
-            if (othersCardData[i].id = options.id) {
-              that.setData({
-                'cardDetailsData.hasCollect':1
-              })
-            }
-          }
-        }
+        app.checkIfExist(options.id,function(res2){
+              if(res2 != ''){
+                that.setData({
+                  'cardDetailsData.hasCollect': 1
+                })
+              }
+        })
+        // if (othersCardData) {
+        //   for (var i = 0; i < othersCardData.length; i++) {
+        //     if (othersCardData[i].id = options.id) {
+        //       that.setData({
+        //         'cardDetailsData.hasCollect': 1
+        //       })
+        //     }
+        //   }
+        // }
       } else {
         if (options.type) {
           // that.setData({
@@ -398,19 +404,18 @@ Page({
             }
           }
         } else {
-          // that.setData({
-          //   getData: that.data.cardDetails,
-          // })
-          var cardData = wx.getStorageSync('cardData')[0]
-          that.setData({
-            cardDetailsData: cardData,
-            mobile: cardData.mobile,
-            'folded.projectInfo': cardData.project.slice(0, 19) + '......',
-            'folded.needInfo': cardData.need.slice(0, 19) + '......',
-            'folded.introInfo': cardData.intro.slice(0, 19) + '......'
-          })
-          wx.setNavigationBarTitle({
-            title: that.data.cardDetailsData.name
+          // var cardData = wx.getStorageSync('cardData')[0]
+          app.getCardData('',function(res2){
+            that.setData({
+              cardDetailsData: res2.cardData,
+              mobile: res2.cardData.mobile,
+              'folded.projectInfo': res2.cardData.project.slice(0, 19) + '......',
+              'folded.needInfo': res2.cardData.need.slice(0, 19) + '......',
+              'folded.introInfo': res2.cardData.intro.slice(0, 19) + '......'
+            })
+            wx.setNavigationBarTitle({
+              title: that.data.cardDetailsData.name
+            })
           })
         }  
       }
@@ -424,13 +429,15 @@ Page({
       if (!that.data.isshare){
         //本人打开名片
         if(that.data.mobile&&that.data.mobile==that.data.cardDetailsData.mobile){
-          var cardData = wx.getStorageSync('cardData')[0]
-          that.setData({
-            cardDetailsData: cardData,
-            mobile: cardData.mobile,
-            'folded.projectInfo': cardData.project.slice(0,19)+'......',
-            'folded.needInfo': cardData.need.slice(0, 19)+'......',
-            'folded.introInfo': cardData.intro.slice(0, 19)+'......'
+          // var cardData = wx.getStorageSync('cardData')[0]
+          app.getCardData('',function(res2){
+            that.setData({
+              cardDetailsData: res2.cardData,
+              mobile: res2.cardData.mobile,
+              'folded.projectInfo': res2.cardData.project.slice(0, 19) + '......',
+              'folded.needInfo': res2.cardData.need.slice(0, 19) + '......',
+              'folded.introInfo': res2.cardData.intro.slice(0, 19) + '......'
+            })
           })
         }
         //打开名片夹中的名片

@@ -1,4 +1,5 @@
 // pages/order/order.js
+var MD5Util = require('../../utils/md5.js'); 
 Page({
 
   /**
@@ -6,9 +7,47 @@ Page({
    */
   data: {
     order:{
-      address:'',
+      userId:'',
+      code:'1000000',
+      name:'现代招商引资操作实务',
+      num:1,
+      price:99.9, 
+      amount:99.9,
+      buyer:'宋禹龙',
+      phone:'17777842295',
+      address:'北京市朝阳区房地首华大厦',
+      goods:[
+        '../../image/123.jpg',
+        '../../image/123.jpg',
+        '../../image/123.jpg'
+      ],
       loglat:'',
+      status:0
+      //0-未发货,1-已发货,2-已完成,3-取消\退款
     }
+  },
+  orderDataNum:function(e){
+    var that = this
+    var total = that.data.order.price * e.detail.value
+    that.setData({
+      'order.num':e.detail.value,
+      'order.amount': that.data.order.price * e.detail.value
+    })
+  },
+  orderDataBuyer: function (e) {
+    this.setData({
+      'order.buyer': e.detail.value
+    })
+  },
+  orderDataPhone:function (e) {
+    this.setData({
+      'order.phone':e.detail.value
+    })
+  },
+  orderDataAddress: function (e) {
+    this.setData({
+      'order.address': e.detail.value
+    })
   },
   openAddress: function () {
     var that = this
@@ -32,8 +71,8 @@ Page({
   },
   formSubmit:function(e){
     var that = this
-    if(e.detail.value.num == ''|| e.detail.value.buyer == '' || e.detail.value.phone == ''|| e.detail.value.address == ''){
-      if(e.detail.value.num == ''){
+    if (e.detail.value.num == '' || e.detail.value.num === '0'||e.detail.value.buyer == '' || e.detail.value.phone == ''|| e.detail.value.address == ''){
+      if (e.detail.value.num == '' || e.detail.value.num === '0'){
         wx.showToast({
           title: '数量必填',
           image: '../../images/error.png',
@@ -56,9 +95,78 @@ Page({
       }
       if (e.detail.value.address == '') {
         wx.showToast({
-          title: '地址',
+          title: '地址必填',
           image: '../../images/error.png',
           duration: 2000
+        })
+      }
+    }
+    else{
+      var reg = /^1[34578]\d{9}$/
+      if(!reg.test(e.detail.value.phone)){
+        wx.showToast({
+          title: '填写正确的手机号',
+          image: '../../images/error.png',
+          duration: 2000
+        })
+      }
+      else{
+        wx.login({
+          success: function (res) {
+            if (res.code) {
+              //发起网络请求
+              wx.request({
+                url: 'https://minidisk.cn/prepay',
+                header: { 'content-type': 'application/x-www-form-urlencoded' },
+                data: {
+                  code: res.code
+                },
+                success: function (res) {
+                  console.log(res.data.result)
+                  var time = (Date.parse(new Date())/1000).toString()
+                  var sign = ''
+                  var signA = "appId=wx291758036acbb3f6" + "&nonceStr=" + res.data.nonceStr + "&package=prepay_id=" + res.data.prepayId + "&signType=MD5&timeStamp=" + time
+                  var signB = signA + "&key=d278ace781eadade7aad50387eee042b"
+                  sign = MD5Util.MD5(signB).toUpperCase(); 
+
+                  wx.requestPayment({
+                    nonceStr: res.data.nonceStr,
+                    package: "prepay_id=" + res.data.prepayId,
+                    signType: 'MD5',
+                    timeStamp: time,
+                    paySign: sign,
+                    success: function (res) {
+                      wx.navigateTo({
+                        url: '../',
+                      }) 
+                    },
+                    fail: function () {
+                    },
+                    complete: function () {
+                      wx.showToast({
+                        title: '支付成功',
+                        icon: 'success',
+                        duration: 1500,
+                      })
+                      var purchaseList = wx.getStorageSync('purchaseList')||[]
+                      purchaseList.unshift(that.data.order)
+                      wx.setStorageSync('purchaseList', purchaseList)
+                      setTimeout(function(){
+                        wx.redirectTo({
+                          url: '../mydeal/mydeal',
+                        })
+                      },1500)
+                    }
+                  })  
+                },
+                fail: function (err) {
+                  console.log(err)
+                }
+              })
+            } else {
+              console.log('获取用户登录态失败！' + res.errMsg)
+            }
+          }
         })
       }
     }

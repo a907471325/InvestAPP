@@ -8,10 +8,16 @@
     <text class="username-key">用户名</text>
     <text class="username-value">{{userInfo.nickName}}</text>
   </view>
-  <view class="cardholder">
-      <text class="card-holder">名片夹</text>
-      <navigator url="../cardcase/cardcase">  
+  <navigator url="../cardcase/cardcase">  
+    <view class="cardholder">
+        <text class="card-holder">名片夹</text>
         <text class="card-in">></text>
-      </navigator>
-  </view>
+    </view>
+  </navigator>
+  <navigator url="../mydeal/mydeal">  
+    <view class="cardholder">
+        <text class="card-holder">我的订单</text>
+        <text class="card-in">></text>
+    </view>
+  </navigator>
 </view>

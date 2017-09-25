@@ -79,37 +79,29 @@ Page({
     var that = this
     if (options.id === "0") {
       that.setData({
-        iseng: true,
         'cardData.data.id':that.getUUID() ,
         'cardData.data.avatarUrl': app.globalData.userInfo.avatarUrl,
-        'cardData.data.name': wx.getStorageSync('userInfo').nickName,
-
       })
       wx.setNavigationBarTitle({
         title: '创建名片'
       })
     } else {
-      var myCards = wx.getStorageSync('cardData')
-      var thisCard
-      for(var i = 0;i < myCards.length;i++){
-        if (myCards[i].id === options.id){
-            thisCard = myCards[i]
-        }
-      }
-      that.setData({
-        iseng: false,
-        'cardData.data.id': options.id,
-        'cardData.data.mobile': thisCard.mobile,
-        'cardData.data.avatarUrl': thisCard.avatarUrl,
-        'cardData.data.name': thisCard.nickName,
-
+      // var myCards = wx.getStorageSync('cardData')
+      // var thisCard
+      // for(var i = 0;i < myCards.length;i++){
+      //   if (myCards[i].id === options.id){
+      //       thisCard = myCards[i]
+      //   }
+      // }
+      app.getCardData('',function(res2){
+        wx.setNavigationBarTitle({
+          title: '编辑名片'
+        })
+        that.setData({
+          'cardData.data': res2.cardData
+        })
       })
-      wx.setNavigationBarTitle({
-        title: '编辑名片'
-      })
-      that.setData({
-        'cardData.data': thisCard,
-      })
+     
     }
   },
   onReady: function () {
@@ -131,10 +123,6 @@ Page({
         that.setData({
           'cardData.data.address': res.address,
           'cardData.data.loglat': res.latitude + ',' + res.longitude
-        })
-        that.setData({
-          'enCardData.data.address': res.address,
-          'enCardData.data.loglat': res.latitude + ',' + res.longitude
         })
       },
       fail: function (res) {
@@ -185,29 +173,28 @@ Page({
             duration: 2000
           })
         } else {
-          var src = wx.getStorageSync('cardData') || []
-          for(var i = 0;i<src.length;i++){
-            if(src[i].id === data.id){
-              src.splice(i)
-            }
-          }
-          src.unshift(data)
-          wx.setStorageSync('cardData',src )
-          wx.navigateBack({
-            delta:1
+          app.postCardData(data, function(res){
+            wx.navigateBack({
+              delta: 1
+            })
           })
+          // var src = wx.getStorageSync('cardData') || []
+          // for(var i = 0;i<src.length;i++){
+          //   if(src[i].id === data.id){
+          //     src.splice(i)
+          //   }
+          // }
+          // src.unshift(data)
+          // wx.setStorageSync('cardData',src )
+          // wx.navigateBack({
+          //   delta:1
+          // })
         }
       } else {
-        var src = wx.getStorageSync('cardData') || []
-        for (var i = 0; i < src.length; i++) {
-          if (src[i].id === data.id) {
-            src.splice(i)
-          }
-        }
-        src.unshift(data)
-        wx.setStorageSync('cardData', src)
-        wx.navigateBack({
-          delta: 1
+        app.postCardData(data, function (res) {
+          wx.navigateBack({
+            delta: 1
+          })
         })
       }
     }

@@ -8,7 +8,8 @@
     "pages/template/template",
     "pages/cardcase/cardcase",
     "pages/course/course",
-    "pages/order/order"
+    "pages/order/order",
+    "pages/mydeal/mydeal"
   ],
   "window": {
     "backgroundTextStyle": "light",

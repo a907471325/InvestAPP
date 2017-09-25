@@ -10,6 +10,12 @@
     <text class="course-introduce-title" wx:else >课程简介</text>
     <!-- <text class="course-introduce-info">《现代招商引资操作实务》着眼于招商引资在新形势下所面临的新机遇与新挑战，紧紧把握全球及国内产业转移趋势，立足于地方招商引资实践，遵循科学发展观，提升招商引资人员战略意识和综合素养，提高区域产业转移的承接能力，把招商引资工作做实做强，为地方经济发展作出卓越贡献。</text> -->
   <text class="course-introduce-info">{{item.intro}}</text>
+  <text class="course-introduce-title" wx:if="{{item.type == 'book'}}">图片详情</text>
+  <view wx:if="{{item.type == 'book'}}">
+    <block wx:for="{{item.goods}}" wx:key="index">
+      <image src="{{item}}"/>
+    </block>
+  </view>
   <text class="course-introduce-title" wx:if="{{item.type == 'book'}}">目录</text>
   <text class="course-introduce-title" wx:else>课程列表</text>
   <text class="course-introduce-info bottom-ex" wx:if="{{item.type == 'book'}}">{{item.detailBook}}</text>
