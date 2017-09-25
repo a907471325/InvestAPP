@@ -113,6 +113,28 @@ App({
       }
     })
   },
+  getOtherCardData: function (data, callback) {
+    var url = 'https://' + this.globalData.host + '/card/id'
+    wx.request({
+      url: url,
+      header: {
+        'token': data,
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        if (res.data.cardData == null) {
+          callback('')
+        }
+        else {
+          callback(res.data)
+        }
+
+      },
+      fail: function (res) {
+        console.log('请求出错')
+      }
+    })
+  },
   postCardData: function (data, callback) {
     var url = 'https://' + this.globalData.host + '/card/card'
     var token = wx.getStorageSync('token')
@@ -198,7 +220,26 @@ App({
       }
     })
   },
-
+  getItemList:function(callback){
+    var url = 'https://' + this.globalData.host + '/shop/itemList'
+    var token = wx.getStorageSync('token')
+    wx.request({
+      url: url,
+      method: 'Get',
+      header: {
+        'token': token,
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        if (res.data != null) {
+          callback(res.data)
+        }
+      },
+      fail: function (res) {
+        console.log('请求出错')
+      }
+    })
+  },
   globalData: {
     userInfo: null,
     host:'minidisk.cn'

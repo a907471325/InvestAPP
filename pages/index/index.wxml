@@ -1,74 +1,41 @@
 <view class="container">
    <swiper class="swiper-items" indicator-dots="{{indicatorDots}}"  
     autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">  
-      <block wx:for="{{imgUrls}}">  
+      <block wx:key="{{item}}" wx:for="{{imgUrls}}">  
         <swiper-item>  
           <image src="{{item}}" class="slide-image" />  
         </swiper-item>  
       </block>  
     </swiper>
+    <view wx:key="{{item}}" wx:for="{{item}}" >
+      <navigator wx:if="{{item.type=='book'}}" url='../course/course?type=book&id={{item.id}}&name={{item.name}}&price={{item.price}}&intro={{item.intro}}&detailBook={{item.detailBook}}' >
+        <view class="course">
+          <view class="courese-img">
+            <image src="{{item.goods[0]}}" class="course-view" />
+          </view>
+          <view class="course-info">
+            <text class="course-info-title">{{item.name}}</text>
+            <text class="course-info-teacher">{{item.pressorauthor}}</text>
+            <text class="course-info-num">页数：{{item.pagesornum}}</text>
+            <text class="course-info-num">{{item.sales}}人订购</text>
+            <text class="course-info-value">￥\t{{item.price}}</text>
+          </view>
+        </view>
+      </navigator>
+    </view>
+
     <navigator url='../course/course?type=audio'>
-    <view class="course">
-      <view class="courese-img">
-        <image src="../../image/audiocourse.jpg" class="course-view" />
+      <view class="course">
+        <view class="courese-img">
+          <image src="../../image/audiocourse.jpg" class="course-view" />
+        </view>
+        <view class="course-info">
+          <text class="course-info-title">招商引资入门课程</text>
+          <text class="course-info-teacher">主讲:王老师</text>
+          <text class="course-info-num">课程数：40</text>
+          <text class="course-info-num">20人订购</text>
+          <text class="course-info-value">￥\t199.00</text>
+        </view>
       </view>
-      <view class="course-info">
-        <text class="course-info-title">招商引资入门课程</text>
-        <text class="course-info-teacher">主讲:王老师</text>
-        <text class="course-info-num">课程数：40</text>
-        <text class="course-info-num">20人订购</text>
-        <text class="course-info-value">￥\t199.00</text>
-      </view>
-    </view>
-    </navigator>
-    <navigator url='../course/course?type=book'>
-    <view class="course">
-      <view class="courese-img">
-        <image src="../../image/1505093599(1).jpg" class="course-view" />
-      </view>
-      <view class="course-info">
-        <text class="course-info-title">现代招商引资操作实务</text>
-        <text class="course-info-teacher">上海财经大学出版社</text>
-        <text class="course-info-num">页数：285</text>
-        <text class="course-info-num">20人订购</text>
-        <text class="course-info-value">￥\t32.30</text>
-      </view>
-    </view>
-    </navigator>
-    <view class="course">
-      <view class="courese-img">
-        <image src="../../image/1505093626(1).jpg" class="course-view" />
-      </view>
-      <view class="course-info">
-        <text class="course-info-title">区域投资环境与招商引资</text>
-        <text class="course-info-teacher">人民邮电出版社</text>
-        <text class="course-info-num">页数：260</text>
-        <text class="course-info-num">80人订购</text>
-        <text class="course-info-value">￥\t54.00</text>
-      </view>
-    </view>
-    <view class="course">
-      <view class="courese-img">
-        <image src="../../image/1505093546(1).png" class="course-view" />
-      </view>
-      <view class="course-info">
-        <text class="course-info-title">政府招商引资指导手册</text>
-        <text class="course-info-teacher">宁波出版社</text>
-        <text class="course-info-num">课页数：482</text>
-        <text class="course-info-num">70人订购</text>
-        <text class="course-info-value">￥\t164.00</text>
-      </view>
-    </view>
-    <view class="course">
-      <view class="courese-img">
-        <image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1504869882137&di=51733ce74e88b614d42aa71ef89dc905&imgtype=0&src=http%3A%2F%2Fimg.pintu360.com%2Fother%2F20150323%2Fca112b37-474f-4025-9626-c3a49b7a62d6.jpg" class="course-view" />
-      </view>
-      <view class="course-info">
-        <text class="course-info-title">招商引资从入门到精通</text>
-        <text class="course-info-teacher">主讲：王老师</text>
-        <text class="course-info-num">课程数：16</text>
-        <text class="course-info-num">学习人数：200</text>
-        <text class="course-info-value">￥\t199</text>
-      </view>
-    </view>  
+    </navigator>  
 </view>

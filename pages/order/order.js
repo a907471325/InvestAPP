@@ -8,19 +8,14 @@ Page({
   data: {
     order:{
       userId:'',
-      code:'1000000',
-      name:'现代招商引资操作实务',
+      code:'',
+      name:'',
       num:1,
-      price:99.9, 
-      amount:99.9,
+      price:'', 
+      amount:'',
       buyer:'宋禹龙',
       phone:'17777842295',
       address:'北京市朝阳区房地首华大厦',
-      goods:[
-        '../../image/123.jpg',
-        '../../image/123.jpg',
-        '../../image/123.jpg'
-      ],
       loglat:'',
       status:0
       //0-未发货,1-已发货,2-已完成,3-取消\退款
@@ -116,10 +111,13 @@ Page({
             if (res.code) {
               //发起网络请求
               wx.request({
-                url: 'https://minidisk.cn/prepay',
+                // url: 'https://minidisk.cn/prepay',
+                url: 'https://127.0.0.1:8443/prepay',
                 header: { 'content-type': 'application/x-www-form-urlencoded' },
                 data: {
-                  code: res.code
+                  code: res.code,
+                  name:that.data.order.name,
+                  price:that.data.order.amount*100
                 },
                 success: function (res) {
                   console.log(res.data.result)
@@ -135,27 +133,26 @@ Page({
                     signType: 'MD5',
                     timeStamp: time,
                     paySign: sign,
-                    success: function (res) {
-                      wx.navigateTo({
-                        url: '../',
-                      }) 
-                    },
-                    fail: function () {
-                    },
-                    complete: function () {
+                    success: function () {
                       wx.showToast({
                         title: '支付成功',
                         icon: 'success',
                         duration: 1500,
                       })
-                      var purchaseList = wx.getStorageSync('purchaseList')||[]
+                      var purchaseList = wx.getStorageSync('purchaseList') || []
                       purchaseList.unshift(that.data.order)
                       wx.setStorageSync('purchaseList', purchaseList)
-                      setTimeout(function(){
+                      setTimeout(function () {
                         wx.redirectTo({
                           url: '../mydeal/mydeal',
                         })
-                      },1500)
+                      }, 1500)
+                    },
+                    fail: function () {
+
+                    },
+                    complete: function () {
+                      
                     }
                   })  
                 },
@@ -175,7 +172,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    var that = this
+    var userId = wx.getStorageSync("token")
+    that.setData({
+      "order.userId": userId,
+      "order.code":options.id,
+      "order.name":options.name,
+      "order.price":options.price,
+      "order.amount":options.price * that.data.order.num
+    })
   },
 
   /**

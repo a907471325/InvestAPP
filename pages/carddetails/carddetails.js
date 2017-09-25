@@ -118,6 +118,7 @@ Page({
   },
   onShareAppMessage: function () {
     var that = this
+    var token=wx.getStorageSync("token")
     // var dataSet = that.data.cardDetailsData
     // var avatarUrl = dataSet.avatarUrl
     //  avatarUrl = avatarUrl.replace('&','%26')
@@ -128,7 +129,7 @@ Page({
     return {
       title: '这是我的名片,请惠存。',
       // path: 'pages/carddetails/carddetails?id=' + dataSet.id + '&name=' + dataSet.name + '&title=' + dataSet.title + '&mobile=' + dataSet.mobile + '&companyName=' + dataSet.companyName + '&loglat=' + dataSet.loglat + '&address=' + dataSet.address + '&share=1' + '&avatarUrl=' + encodeURIComponent(avatarUrl) + '&project=' + dataSet.project + '&need=' + dataSet.need + '&intro=' + dataSet.intro,
-      path: 'pages/carddetails/carddetails?id=' + that.data.cardDetailsData.id + '&share=1',
+      path: 'pages/carddetails/carddetails?id=' + that.data.cardDetailsData.id +'&token='+token+ '&share=1',
       success: function (res) {
         // 分享成功
         console.log('success')
@@ -359,7 +360,10 @@ Page({
       })
       // var othersCardData = wx.getStorageSync('othersCardData') || []
       if (options.share) {
-        app.getCardData(options.id,function(res2){
+        that.setData({
+          isshare: true
+        })
+        app.getCardData(options.token,function(res2){
           console.log(res2.cardData)
           that.setData({
             isshare: true,
@@ -369,7 +373,8 @@ Page({
             'folded.introInfo': res2.cardData.intro.slice(0, 19) + '......'
           })
         })
-        app.checkIfExist(options.id,function(res2){
+        app.checkIfExist(options.id.concat(options.token),function(res2){
+          console.log(options.id.concat(options.token))
               if(res2 != ''){
                 that.setData({
                   'cardDetailsData.hasCollect': 1
@@ -427,6 +432,7 @@ Page({
   onShow: function () {
       var that = this
       if (!that.data.isshare){
+        console.log(that.data.isshare)
         //本人打开名片
         if(that.data.mobile&&that.data.mobile==that.data.cardDetailsData.mobile){
           // var cardData = wx.getStorageSync('cardData')[0]
