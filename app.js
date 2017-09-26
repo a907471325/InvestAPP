@@ -1,4 +1,5 @@
 //app.js
+
 App({
   onLaunch: function() {
     this.getLogiCallback()
@@ -237,6 +238,24 @@ App({
       },
       fail: function (res) {
         console.log('请求出错')
+      }
+    })
+  },
+  payOff:function(order,callback){
+    var url = 'https://' + this.globalData.host + '/shop/deal'
+    var token = wx.getStorageSync('token')
+    wx.request({
+      url: url,
+      method: "POST",
+      data:order,
+      header:{
+        'token':token,
+        'content-type':'application/json'
+      },
+      success:function(res){
+          if(res.data.result == "success"){
+            callback()
+          }
       }
     })
   },

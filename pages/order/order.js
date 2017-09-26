@@ -1,4 +1,17 @@
 // pages/order/order.js
+function add0(m) { return m < 10 ? '0' + m : m };
+function getCurrentTime() {
+  var time = new Date();
+  var y = time.getFullYear();
+  var m = time.getMonth() + 1;
+  var d = time.getDate();
+  var h = time.getHours();
+  var mm = time.getMinutes();
+  var s = time.getSeconds();
+  var currentTime = y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h) + ':' + add0(mm) + ':' + add0(s)
+  return currentTime
+}
+var app = getApp()
 var MD5Util = require('../../utils/md5.js'); 
 Page({
 
@@ -7,7 +20,8 @@ Page({
    */
   data: {
     order:{
-      userId:'',
+      orderId:'',
+      dealTime:'',
       code:'',
       name:'',
       num:1,
@@ -112,7 +126,7 @@ Page({
               //发起网络请求
               wx.request({
                 // url: 'https://minidisk.cn/prepay',
-                url: 'https://127.0.0.1:8443/prepay',
+                url: 'https://minidisk.cn/prepay',
                 header: { 'content-type': 'application/x-www-form-urlencoded' },
                 data: {
                   code: res.code,
@@ -120,13 +134,12 @@ Page({
                   price:that.data.order.amount*100
                 },
                 success: function (res) {
-                  console.log(res.data.result)
                   var time = (Date.parse(new Date())/1000).toString()
                   var sign = ''
                   var signA = "appId=wx291758036acbb3f6" + "&nonceStr=" + res.data.nonceStr + "&package=prepay_id=" + res.data.prepayId + "&signType=MD5&timeStamp=" + time
                   var signB = signA + "&key=d278ace781eadade7aad50387eee042b"
                   sign = MD5Util.MD5(signB).toUpperCase(); 
-
+                //
                   wx.requestPayment({
                     nonceStr: res.data.nonceStr,
                     package: "prepay_id=" + res.data.prepayId,
@@ -134,19 +147,24 @@ Page({
                     timeStamp: time,
                     paySign: sign,
                     success: function () {
+                      that.setData({
+                        "order.dealTime": getCurrentTime()
+                      })
                       wx.showToast({
                         title: '支付成功',
                         icon: 'success',
                         duration: 1500,
                       })
-                      var purchaseList = wx.getStorageSync('purchaseList') || []
-                      purchaseList.unshift(that.data.order)
-                      wx.setStorageSync('purchaseList', purchaseList)
-                      setTimeout(function () {
-                        wx.redirectTo({
-                          url: '../mydeal/mydeal',
-                        })
-                      }, 1500)
+                      // var purchaseList = wx.getStorageSync('purchaseList') || []
+                      // purchaseList.unshift(that.data.order)
+                      // wx.setStorageSync('purchaseList', purchaseList)
+                      app.payOff(that.data.order,function(){
+                        setTimeout(function () {
+                          wx.redirectTo({
+                            url: '../mydeal/mydeal',
+                          })
+                        }, 1500)
+                      })
                     },
                     fail: function () {
 
@@ -173,9 +191,7 @@ Page({
    */
   onLoad: function (options) {
     var that = this
-    var userId = wx.getStorageSync("token")
     that.setData({
-      "order.userId": userId,
       "order.code":options.id,
       "order.name":options.name,
       "order.price":options.price,
