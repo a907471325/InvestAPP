@@ -25,7 +25,8 @@ Page({
       code:'',
       name:'',
       num:1,
-      price:'', 
+      price:'',
+      showImg:'', 
       amount:'',
       buyer:'宋禹龙',
       phone:'17777842295',
@@ -195,7 +196,8 @@ Page({
       "order.code":options.id,
       "order.name":options.name,
       "order.price":options.price,
-      "order.amount":options.price * that.data.order.num
+      "order.amount":options.price * that.data.order.num,
+      "order.showImg":options.showImg
     })
   },
 

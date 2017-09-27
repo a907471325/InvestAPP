@@ -1,4 +1,5 @@
 // pages/cardcase/cardcase.js
+var app = getApp()
 Page({
 
   /**
@@ -35,8 +36,13 @@ Page({
    */
   onShow: function () {
     var that = this
-
-    this.setCardData()
+    app.getCardcaseData(function(res){
+        if(res){
+          that.setData({
+            cardData: res
+          })
+        }
+    })
   },
   /**
    * 用户点击右上角分享

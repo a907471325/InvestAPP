@@ -363,8 +363,9 @@ Page({
         that.setData({
           isshare: true
         })
-        app.getCardData(options.token,function(res2){
-          console.log(res2.cardData)
+        var selfId = wx.getStorageSync("token")
+      
+        app.getOtherCardData(options.token,function(res2){
           that.setData({
             isshare: true,
             cardDetailsData : res2.cardData,
@@ -372,14 +373,13 @@ Page({
             'folded.needInfo': res2.cardData.need.slice(0, 19) + '......',
             'folded.introInfo': res2.cardData.intro.slice(0, 19) + '......'
           })
-        })
-        app.checkIfExist(options.id.concat(options.token),function(res2){
-          console.log(options.id.concat(options.token))
-              if(res2 != ''){
-                that.setData({
-                  'cardDetailsData.hasCollect': 1
-                })
-              }
+          app.checkIfExist(selfId.concat(options.id), function (res2) {
+            if (res2 != '') {
+              that.setData({
+                'cardDetailsData.hasCollect': 1
+              })
+            }
+          })
         })
         // if (othersCardData) {
         //   for (var i = 0; i < othersCardData.length; i++) {
@@ -395,19 +395,28 @@ Page({
           // that.setData({
           //   getData: that.data.othersCardDetails,
           // }) 
-          if (othersCardData) {
-            for (var i = 0; i < othersCardData.length; i++) {
-              if (othersCardData[i].id = options.id) {
-                that.setData({
-                  cardDetailsData: othersCardData[i],
-                  'cardDetailsData.hasCollect': 1,
-                  'folded.projectInfo': othersCardData[i].project.slice(0, 19) + '......',
-                  'folded.needInfo': othersCardData[i].need.slice(0, 19) + '......',
-                  'folded.introInfo': othersCardData[i].intro.slice(0, 19) + '......'
-                })
-              }
-            }
-          }
+          // if (othersCardData) {
+          //   for (var i = 0; i < othersCardData.length; i++) {
+          //     if (othersCardData[i].id = options.id) {
+          //       that.setData({
+          //         cardDetailsData: othersCardData[i],
+          //         'cardDetailsData.hasCollect': 1,
+          //         'folded.projectInfo': othersCardData[i].project.slice(0, 19) + '......',
+          //         'folded.needInfo': othersCardData[i].need.slice(0, 19) + '......',
+          //         'folded.introInfo': othersCardData[i].intro.slice(0, 19) + '......'
+          //       })
+          //     }
+          //   }
+          // }
+          app.getOtherCardDataByCardId(options.id, function (res2) {
+            that.setData({
+              cardDetailsData: res2.cardData,
+              'cardDetailsData.hasCollect': 1,
+              'folded.projectInfo': res2.cardData.project.slice(0, 19) + '......',
+              'folded.needInfo': res2.cardData.need.slice(0, 19) + '......',
+              'folded.introInfo': res2.cardData.intro.slice(0, 19) + '......'
+            })
+          })
         } else {
           // var cardData = wx.getStorageSync('cardData')[0]
           app.getCardData('',function(res2){

@@ -123,6 +123,8 @@ App({
         'content-type': 'application/json'
       },
       success: function (res) {
+        console.log(res)
+        console.log(data)
         if (res.data.cardData == null) {
           callback('')
         }
@@ -130,6 +132,52 @@ App({
           callback(res.data)
         }
 
+      },
+      fail: function (res) {
+        console.log('请求出错')
+      }
+    })
+  },
+  getOtherCardDataByCardId: function (data, callback) {
+    var url = 'https://' + this.globalData.host + '/card/cardId'
+    wx.request({
+      url: url,
+      header: {
+        'token': data,
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        console.log(res)
+        console.log(data)
+        if (res.data.cardData == null) {
+          callback('')
+        }
+        else {
+          callback(res.data)
+        }
+
+      },
+      fail: function (res) {
+        console.log('请求出错')
+      }
+    })
+  },
+  getCardcaseData: function (callback) {
+    var url = 'https://' + this.globalData.host + '/cardcase/case'
+    var token = wx.getStorageSync('token')
+    wx.request({
+      url: url,
+      header: {
+        'token': token,
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        if (res.data == null) {
+          callback('')
+        }
+        else {
+          callback(res.data)
+        }
       },
       fail: function (res) {
         console.log('请求出错')
@@ -184,14 +232,11 @@ App({
         'content-type': 'application/json'
       },
       success: function (res) {
-        console.log(data)
-        console.log(token)
-        console.log(res)
         if(res.data.cardData == null){
           callback('')
         }
         else{
-          callback(res.data.cardData)
+          callback(true)
         }
       },
       fail: function (res) {

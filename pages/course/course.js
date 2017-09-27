@@ -42,6 +42,7 @@ Page({
       // sales:'',
       price:'',
       intro:'',
+      showImg:'',
       // intro:'招商引资源于中国因开放政策所成立的开发区，早期主要集中在吸收制造业的外国直接投资（FDI，Foreign Direct Investment)。中国早期沿海开发区的招商引资所引起的示范效应（地方经济总量增长，地方财政收入增长，地方就业增加，地方政府基础设施投入的增加，地方官员升迁比例增加）被各地政府官员发现，随后中国各级政府成立了大量的开发区并开展招商引资工作。',
       detailSound:[],
       goods:[
@@ -55,7 +56,7 @@ Page({
   },
 
   confirmDetails:function(){
-    var navUrl = '../order/order?id='+this.data.item.id+"&name="+this.data.item.name+"&price="+this.data.item.price
+    var navUrl = '../order/order?id='+this.data.item.id+"&name="+this.data.item.name+"&price="+this.data.item.price+"&showImg="+this.data.item.showImg
     wx.navigateTo({
       url: navUrl,
     })
@@ -93,12 +94,15 @@ Page({
       })
     }
     if (that.data.item.type == 'book'){
+      var imgs = options.imgs.split(',')
       that.setData({
         "item.id":options.id,
         "item.name":options.name,
         "item.price":options.price,
         "item.intro":options.intro,
-        "item.detailBook":options.detailBook
+        "item.detailBook":options.detailBook,
+        "item.goods":imgs,
+        "item.showImg": imgs[0]
       })
     }
   },
@@ -158,9 +162,6 @@ Page({
   onReady: function (e) {
     // this.audioCtx = wx.createAudioContext('myAudio')
   },
-  /**
-   * 用户点击右上角分享
-   */
   onShareAppMessage: function () {
   
   }
