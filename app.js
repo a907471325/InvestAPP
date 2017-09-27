@@ -259,6 +259,20 @@ App({
       }
     })
   },
+  getOrderList:function(callback){
+    var url = 'https://' + this.globalData.host + '/shop/orderList'
+    var token = wx.getStorageSync('token')
+    wx.request({
+      url: url,
+      header:{
+        'token':token,
+        'content-type':'application/json'
+      },
+      success:function(res){
+        callback(res.data)
+      }
+    })
+  },
   globalData: {
     userInfo: null,
     host:'minidisk.cn'
