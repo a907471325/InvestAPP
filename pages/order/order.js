@@ -28,9 +28,9 @@ Page({
       price:'',
       showImg:'', 
       amount:'',
-      buyer:'宋禹龙',
-      phone:'17777842295',
-      address:'北京市朝阳区房地首华大厦',
+      buyer:'',
+      phone:'',
+      address:'',
       loglat:'',
       status:0
       //0-未发货,1-已发货,2-已完成,3-取消\退款

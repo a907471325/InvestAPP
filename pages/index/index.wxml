@@ -24,7 +24,7 @@
       </navigator>
     </view>
 
-    <navigator url='../course/course?type=audio'>
+    <!-- <navigator url='../course/course?type=audio'>
       <view class="course">
         <view class="courese-img">
           <image src="../../image/audiocourse.jpg" class="course-view" />
@@ -37,5 +37,5 @@
           <text class="course-info-value">￥\t199.00</text>
         </view>
       </view>
-    </navigator>  
+    </navigator>   -->
 </view>

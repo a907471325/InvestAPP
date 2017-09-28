@@ -237,22 +237,28 @@ Page({
     //     }
     //   })
     // })
-    var cardBox = wx.getStorageSync('othersCardData') || []
-    if (cardBox) {
-      for (var i = 0; i < cardBox.length; i++) {
-        if (cardBox[i].id === e.target.dataset.id) {
-          cardBox.splice(i)
-        }
+    // var cardBox = wx.getStorageSync('othersCardData') || []
+    // if (cardBox) {
+    //   for (var i = 0; i < cardBox.length; i++) {
+    //     if (cardBox[i].id === e.target.dataset.id) {
+    //       cardBox.splice(i)
+    //     }
+    //   }
+    // }
+    // wx.setStorageSync('othersCardData', cardBox)
+    app.removeFromCase(e.target.dataset.id,function(res){
+      if(res = "success"){
+        wx.showToast({
+          title: '删除成功',
+          icon: 'success',
+          duration: 1000,
+        })
+        setTimeout(function(){
+          wx.navigateBack({
+            delta: 1
+          })
+        },1000)  
       }
-    }
-    wx.setStorageSync('othersCardData', cardBox)
-    wx.showToast({
-      title: '删除成功',
-      icon: 'success',
-      duration: 1000,
-    })
-    wx.navigateBack({
-      delta: 1
     })
   },
   //收藏他人名片夹

@@ -318,6 +318,22 @@ App({
       }
     })
   },
+  removeFromCase:function(id,callback){
+    var url = 'https://' + this.globalData.host + '/cardcase/cardData/' + id
+    var token = wx.getStorageSync('token')
+    wx.request({
+      url: url,
+      method:'DELETE',
+      header: {
+        'token': token,
+        'content-type': 'application/json'
+      },
+      success: function (res) {
+        console.log(res)
+        callback(res.data)
+      }
+    })
+  },
   globalData: {
     userInfo: null,
     host:'minidisk.cn'
